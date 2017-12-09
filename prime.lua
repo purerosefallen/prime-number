@@ -2,6 +2,8 @@ local prime_list={}
 local current=0
 local start_number=0
 local total=100000
+local time_limit=2400
+local t=os.clock()
 function output(n,file)
 	--print(n)
 	if file then
@@ -17,7 +19,12 @@ function check_prime(n,file)
 	output(n,file)
 	return true
 end
-
+function check_time()
+	if os.clock()-t>1 then
+		t=os.clock()
+		print("Time remaining: "..math.ceil(2400-t).." sec")
+	end
+end
 function load_prime()
 	for line in io.lines("res.txt") do
 		local n=tonumber(line)
@@ -43,16 +50,18 @@ xpcall(load_prime,default_prime)
 print("Started finding prime numbers.")
 
 local file=io.open("res.txt","a+")
-for i=1,total do
+check_time()
+while t<=time_limit do
 	check_prime(current+1,file)
+	check_time()
 	check_prime(current+3,file)
+	check_time()
 	check_prime(current+7,file)
+	check_time()
 	check_prime(current+9,file)
+	check_time()
 	current=current+10
-	if (i/total*1000) % 1==0 then
-		print("Process: "..(i/total*100).."%")
-	end
 end
 file:close()
 
-print("Done. "..(#prime_list-start_number).." prime numbers found this time. "..#prime_list.." prime numbers found in total.")
+print("Done. "..(#prime_list-start_number).." prime numbers found in 30 minutes. "..#prime_list.." prime numbers found in total.")
