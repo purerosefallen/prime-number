@@ -1,8 +1,7 @@
 local prime_list={}
 local current=0
 local start_number=0
-local total=100000
-local time_limit=2400
+local time_limit=2700
 local t=os.clock()
 function output(n,file)
 	--print(n)
@@ -22,7 +21,7 @@ end
 function check_time()
 	if os.clock()-t>1 then
 		t=os.clock()
-		print("Time remaining: "..math.ceil(2400-t).." sec")
+		print("Time remaining: "..math.min(math.ceil(time_limit-t),0).." sec")
 	end
 end
 function load_prime()
@@ -64,4 +63,4 @@ while t<=time_limit do
 end
 file:close()
 
-print("Done. "..(#prime_list-start_number).." prime numbers found in 30 minutes. "..#prime_list.." prime numbers found in total.")
+print("Done. "..(#prime_list-start_number).." prime numbers found in "..time_limit.." seconds. "..#prime_list.." prime numbers found in total.")
