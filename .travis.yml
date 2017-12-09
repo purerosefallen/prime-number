@@ -2,6 +2,10 @@ language: cpp
 sudo: required
 
 before_install:
+- git config --global user.name "Smile-DK"
+- git config --global user.email "2236141431@qq.com"
+- git checkout master
+
 - wget 'http://www.lua.org/ftp/lua-5.3.4.tar.gz'
 - tar zxf lua-5.3.4.tar.gz
 - cd lua-5.3.4 && sudo make linux test install && cd ..
@@ -9,9 +13,6 @@ before_install:
 
 script:
 - lua prime.lua
-
-- git config --global user.name "Smile-DK"
-- git config --global user.email "2236141431@qq.com"
 
 - git add . -A
 - git commit -m "Prime number result"
