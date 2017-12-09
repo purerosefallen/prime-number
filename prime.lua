@@ -1,7 +1,7 @@
 local prime_list={}
 local current=0
 local start_number=0
-local total=10000
+local total=100000
 function output(n,file)
 	--print(n)
 	if file then
@@ -38,8 +38,10 @@ function default_prime()
 	end
 	file:close()
 end
+
 xpcall(load_prime,default_prime)
 print("Started finding prime numbers.")
+
 local file=io.open("res.txt","a+")
 for i=1,total do
 	check_prime(current+1,file)
@@ -52,4 +54,5 @@ for i=1,total do
 	end
 end
 file:close()
+
 print("Done. "..(#prime_list-start_number).." prime numbers found this time. "..#prime_list.." prime numbers found in total.")
