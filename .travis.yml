@@ -5,6 +5,14 @@ before_install:
 - wget 'http://www.lua.org/ftp/lua-5.3.4.tar.gz'
 - tar zxf lua-5.3.4.tar.gz
 - cd lua-5.3.4 && sudo make linux test install && cd ..
+- rm -rf lua-5.3.4.tar.gz lua-5.3.4
 
 script:
 - lua prime.lua
+
+- git config --global user.name "Smile-DK"
+- git config --global user.email "2236141431@qq.com"
+
+- git add . -A
+- git commit -m "Prime number result"
+- git push https://$AUTH_TOKEN@github.com/purerosefallen/prime-number master

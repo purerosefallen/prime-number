@@ -1,7 +1,9 @@
 local prime_list={}
 local current=0
+local start_number=0
+local total=10000
 function output(n,file)
-	print(n)
+	--print(n)
 	if file then
 		file:write(n.."\n")
 	end
@@ -23,7 +25,8 @@ function load_prime()
 	end
 	local maxc=prime_list[#prime_list]
 	current=math.floor(maxc/10)*10
-	print("Loaded prime from file.")
+	print("Loaded prime from file. "..#prime_list.." prime numbers have been found previously.")
+	start_number=#prime_list
 end
 function default_prime()
 	prime_list={2,3,5,7,11,13,17,19,23,29}
@@ -35,15 +38,18 @@ function default_prime()
 	end
 	file:close()
 end
-
 xpcall(load_prime,default_prime)
-
+print("Started finding prime numbers.")
 local file=io.open("res.txt","a+")
-while true do
+for i=1,total do
 	check_prime(current+1,file)
 	check_prime(current+3,file)
 	check_prime(current+7,file)
 	check_prime(current+9,file)
 	current=current+10
+	if (i/total*1000) % 1==0 then
+		print("Process: "..(i/total*100).."%")
+	end
 end
 file:close()
+print("Done. "..(#prime_list-start_number).." prime numbers found this time. "..#prime_list.." prime numbers found in total.")
