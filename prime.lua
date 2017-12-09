@@ -21,9 +21,10 @@ end
 function check_time()
 	if os.clock()-t>1 then
 		t=os.clock()
-		print("Time remaining: "..math.min(math.ceil(time_limit-t),0).." sec")
+		print("Time remaining: "..math.max(math.ceil(time_limit-t),0).." sec")
 	end
 end
+
 function load_prime()
 	for line in io.lines("res.txt") do
 		local n=tonumber(line)
