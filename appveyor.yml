@@ -1,0 +1,23 @@
+version: '{build}'
+
+install:  
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/premake/premake-core/releases/download/v5.0.0-alpha10/premake-5.0.0-alpha12-windows.zip ; exit 0"
+  - 7z x premake-5.0.0-alpha12-windows.zip
+  
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://www.lua.org/ftp/lua-5.3.4.tar.gz ; exit 0"
+  - tar xf lua-5.3.4.tar.gz
+  - move lua-5.3.4\src lua
+  
+  - premake5 vs2015
+  
+configuration: Release
+
+build: 
+    project: lua.sln
+    parallel: true
+
+after_build:
+  - mv -f bin/Release/* .
+  - lua.exe prime.lua
+
+test: off
