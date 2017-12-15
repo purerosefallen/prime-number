@@ -1,21 +1,21 @@
 local prime_list={}
 local current=0
 local start_number=0
-local time_limit=2700
+local time_limit=2400
 local t=os.clock()
-function output(n,file)
+function output(i,n)
 	--print(n)
-	if file then
-		file:write(n.."\n")
-	end
+	local file=io.open("res/"..i..".txt","w+")
+	file:write(n)
+	file:close()
 end
 
-function check_prime(n,file)
+function check_prime(n)
 	for _,cn in ipairs(prime_list) do
 		if n%cn==0 then return false end
 	end
 	table.insert(prime_list,n)
-	output(n,file)
+	output(#prime_list,n)
 	return true
 end
 function check_time()
@@ -26,42 +26,43 @@ function check_time()
 end
 
 function load_prime()
-	for line in io.lines("res.txt") do
-		local n=tonumber(line)
-		if n then table.insert(prime_list,n) end
+	local n=1
+	local f=io.open("./res/"..n..".txt","r+")
+	while f do
+		local line=f:read("*a")
+		table.insert(prime_list,tonumber(line))
+		n=n+1
+		f:close()
+		f=io.open("./res/"..n..".txt","r+")
 	end
-	local maxc=prime_list[#prime_list]
-	current=math.floor(maxc/10)*10
-	print("Loaded prime from file. "..#prime_list.." prime numbers have been found previously.")
-	start_number=#prime_list
-end
-function default_prime()
-	prime_list={2,3,5,7,11,13,17,19,23,29}
-	current=30
-	print("Loaded default prime.")
-	local file=io.open("res.txt","a+")
-	for _,n in ipairs(prime_list) do
-		output(n,file)
+	if n>10 then
+		local maxc=prime_list[#prime_list]
+		current=math.floor(maxc/10)*10
+		print("Loaded prime from file. "..#prime_list.." prime numbers have been found previously.")
+		start_number=#prime_list
+	else
+		prime_list={2,3,5,7,11,13,17,19,23,29}
+		current=30
+		print("Loaded default prime.")
+		for i,n in ipairs(prime_list) do
+			output(i,n)
+		end
 	end
-	file:close()
 end
-
-xpcall(load_prime,default_prime)
+load_prime()
 print("Started finding prime numbers.")
 
-local file=io.open("res.txt","a+")
 check_time()
 while t<=time_limit do
-	check_prime(current+1,file)
+	check_prime(current+1)
 	check_time()
-	check_prime(current+3,file)
+	check_prime(current+3)
 	check_time()
-	check_prime(current+7,file)
+	check_prime(current+7)
 	check_time()
-	check_prime(current+9,file)
+	check_prime(current+9)
 	check_time()
 	current=current+10
 end
-file:close()
 
 print("Done. "..(#prime_list-start_number).." prime numbers found in "..time_limit.." seconds. "..#prime_list.." prime numbers found in total.")
