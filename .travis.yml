@@ -15,5 +15,5 @@ script:
 - lua prime.lua
 
 - git add . -A
-- git commit -m "Prime number result"
+- git commit -m "Prime number result" > /dev/null
 - git push https://$AUTH_TOKEN@github.com/purerosefallen/prime-number master
