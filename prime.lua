@@ -12,6 +12,7 @@ end
 
 function check_prime(n)
 	for _,cn in ipairs(prime_list) do
+		if cn>math.sqrt(n) then break end
 		if n%cn==0 then return false end
 	end
 	table.insert(prime_list,n)
